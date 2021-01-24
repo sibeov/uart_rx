@@ -1,0 +1,8 @@
+#+author: Sindre Bergsvik Øvstegård
+#+title: UART - Receiver
+
+* Notes:
+For academic purposes.
+
+* Dependencies
+    - uart_common library.
