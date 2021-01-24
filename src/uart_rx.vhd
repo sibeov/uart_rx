@@ -86,9 +86,11 @@ begin
                                 rx_clk_count_s <= 0;
                             else
                                 rx_par_data_s(rx_bit_index) <= data_serial_i;
-                                if (data_serial_i = '1') then
-                                    rx_one_count_s <= rx_one_count_s + 1;
-                                end if;
+
+                                -- Parity module. Add later!
+                                -- if (data_serial_i = '1') then
+                                --     rx_one_count_s <= rx_one_count_s + 1;
+                                -- end if;
 
                                 rx_state_s     <= s_RX_RECEIVE;
                                 rx_bit_index   <= rx_bit_index + 1;
@@ -99,6 +101,7 @@ begin
                             rx_state_s     <= s_RX_RECEIVE;
                         end if;
 
+                    -- Add later!
                     -- when s_RX_PARITY =>
                     --     if ((rx_one_count_s mod 2) = 0) then
                     --         rx_parity_s <= '1';
