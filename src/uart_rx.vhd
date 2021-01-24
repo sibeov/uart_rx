@@ -47,7 +47,7 @@ begin
     begin
 
         if (rising_edge(clk_i)) then
-            if (rst_n = '0') then
+            if (rst_n_i = '0') then
                 -- Set all signals <= '0';
             else
 
@@ -82,9 +82,9 @@ begin
                                 rx_clk_count_s <= 0;
                             else
                                 rx_par_data_s(rx_bit_index) <= data_serial_i;
-                                rx_state_s     <= s_RX_RECEIVE;
-                                rx_bit_index   <= rx_bit_index + 1;
-                                rx_clk_count_s <= 0;
+                                rx_state_s                  <= s_RX_RECEIVE;
+                                rx_bit_index                <= rx_bit_index + 1;
+                                rx_clk_count_s              <= 0;
                             end if;
                         else
                             rx_clk_count_s <= rx_clk_count_s + 1;
@@ -93,14 +93,15 @@ begin
 
                     when s_RX_STOP =>
                         if (rx_clk_count_s = C_CLK_PR_BIT - 1) then
+                            rx_data_valid_s <= '1';
                         else
                             rx_clk_count_s <= rx_clk_count_s + 1;
                             rx_state_s     <= s_RX_STOP;
                         end if;
 
                     when s_RX_CLEANUP =>
-                        rx_parity_s    <= '0';
-                        rx_state_s     <= s_RX_IDLE;
+                        rx_data_valid_s <= '0';
+                        rx_state_s      <= s_RX_IDLE;
 
                     when others =>
                         rx_state_s <= s_RX_IDLE;
