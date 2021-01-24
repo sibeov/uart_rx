@@ -14,7 +14,7 @@ Libraries:
         - "./tb/*.vhd"
 
     # Common library
-    - name: comp_lib
+    - name: com_lib
       paths:
         - "./lib/*.vhd"
         - "./lib/*.vhdl"
@@ -23,6 +23,8 @@ Libraries:
       paths:
         - "../../lib/*.vhd"
         - "../../lib/*.vhdl"
+        - "../../lib/**/*.vhd"
+        - "../../lib/**/*.vhdl"
 
     #Point to the IEEE standard libraries
     - name: ieee
