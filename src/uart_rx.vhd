@@ -28,14 +28,10 @@ architecture rtl of uart_rx is
         s_RX_IDLE,
         s_RX_START,
         s_RX_RECEIVE,
-        s_RX_PARITY,
         s_RX_STOP,
         s_RX_CLEANUP
     );
     signal rx_state_s      : uart_rx_state_t                     := s_RX_IDLE;
-
-    -- Parity
-    signal rx_one_count_s  : integer range 0 to C_DATA_BITS - 1  := 0;
 
     -- Data and clk count
     signal rx_clk_count_s  : integer range 0 to C_CLK_PR_BIT - 1 := 0;
@@ -86,10 +82,6 @@ begin
                                 rx_clk_count_s <= 0;
                             else
                                 rx_par_data_s(rx_bit_index) <= data_serial_i;
-                                if (data_serial_i = '1') then
-                                    rx_one_count_s <= rx_one_count_s + 1;
-                                end if;
-
                                 rx_state_s     <= s_RX_RECEIVE;
                                 rx_bit_index   <= rx_bit_index + 1;
                                 rx_clk_count_s <= 0;
@@ -99,15 +91,6 @@ begin
                             rx_state_s     <= s_RX_RECEIVE;
                         end if;
 
-                    -- when s_RX_PARITY =>
-                    --     if ((rx_one_count_s mod 2) = 0) then
-                    --         rx_parity_s <= '1';
-                    --         rx_state_s  <= s_RX_STOP;
-                    --     else
-                    --         rx_parity_s <= '0';
-                    --         rx_state_s  <= s_RX_STOP;
-                    --     end if;
-
                     when s_RX_STOP =>
                         if (rx_clk_count_s = C_CLK_PR_BIT - 1) then
                         else
@@ -116,7 +99,6 @@ begin
                         end if;
 
                     when s_RX_CLEANUP =>
-                        rx_one_count_s <= 0;
                         rx_parity_s    <= '0';
                         rx_state_s     <= s_RX_IDLE;
 
